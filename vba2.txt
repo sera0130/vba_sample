@@ -1,0 +1,38 @@
+Option Explicit
+
+Sub GenerateSQL()
+    Dim wsInput As Worksheet
+    Dim wsSelect As Worksheet
+    Dim wsUpdate As Worksheet
+    Dim wsInsert As Worksheet
+    Dim wsDelete As Worksheet
+    Dim rng As Range
+    Dim cell As Range
+    Dim sql As String
+    
+    ' 入力と出力のシートを設定
+    Set wsInput = ThisWorkbook.Sheets("Sheet1") ' 入力シート名を適宜変更してください
+    Set wsSelect = ThisWorkbook.Sheets("Select") ' SELECT文の出力シート名を適宜変更してください
+    Set wsUpdate = ThisWorkbook.Sheets("Update") ' UPDATE文の出力シート名を適宜変更してください
+    Set wsInsert = ThisWorkbook.Sheets("Insert") ' INSERT文の出力シート名を適宜変更してください
+    Set wsDelete = ThisWorkbook.Sheets("Delete") ' DELETE文の出力シート名を適宜変更してください
+    
+    ' 入力シートの1列目のレコードをループ
+    For Each cell In wsInput.Range("A2:A" & wsInput.Cells(wsInput.Rows.Count, "A").End(xlUp).Row)
+        ' SELECT文を生成
+        sql = "SELECT * FROM table WHERE column = '" & cell.Value & "';"
+        wsSelect.Cells(wsSelect.Cells(wsSelect.Rows.Count, "A").End(xlUp).Row + 1, "A").Value = sql
+        
+        ' UPDATE文を生成
+        sql = "UPDATE table SET column = '" & cell.Value & "' WHERE condition;"
+        wsUpdate.Cells(wsUpdate.Cells(wsUpdate.Rows.Count, "A").End(xlUp).Row + 1, "A").Value = sql
+        
+        ' INSERT文を生成
+        sql = "INSERT INTO table (column) VALUES ('" & cell.Value & "');"
+        wsInsert.Cells(wsInsert.Cells(wsInsert.Rows.Count, "A").End(xlUp).Row + 1, "A").Value = sql
+        
+        ' DELETE文を生成
+        sql = "DELETE FROM table WHERE column = '" & cell.Value & "';"
+        wsDelete.Cells(wsDelete.Cells(wsDelete.Rows.Count, "A").End(xlUp).Row + 1, "A").Value = sql
+    Next cell
+End Sub
