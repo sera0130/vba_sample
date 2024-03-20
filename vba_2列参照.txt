@@ -1,0 +1,22 @@
+Option Explicit
+
+Sub GenerateSQL()
+    Dim wsInput As Worksheet
+    Dim wsOutput As Worksheet
+    Dim i As Long
+    Dim sql As String
+    
+    ' 入力と出力のシートを設定
+    Set wsInput = ThisWorkbook.Sheets("Sheet1") ' 入力シート名を適宜変更してください
+    Set wsOutput = ThisWorkbook.Sheets("Sheet2") ' 出力シート名を適宜変更してください
+    
+    ' 入力シートの1列目と2列目のレコードをループ
+    For i = 2 To wsInput.Cells(wsInput.Rows.Count, "A").End(xlUp).Row
+        ' SQLを生成（ここでは例としてSELECT文を生成）
+        sql = "SELECT * FROM table WHERE column1 = '" & wsInput.Cells(i, "A").Value & "' AND column2 = '" & wsInput.Cells(i, "B").Value & "';"
+        
+        ' 出力シートにSQLを出力
+        wsOutput.Cells(wsOutput.Cells(wsOutput.Rows.Count, "A").End(xlUp).Row + 1, "A").Value = sql
+    Next i
+End Sub
+
